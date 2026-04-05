@@ -195,4 +195,4 @@ uvicorn app.main:app --reload
 
 ## URL de deploy
 
-> Adicionar aqui a URL pública da aplicação após o deploy.
+> DATABASE_URL = "mysql+pymysql://root:SUA_SENHA_AQUI@localhost/game_api"
