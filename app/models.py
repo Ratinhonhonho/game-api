@@ -33,7 +33,7 @@ class Player(Base):
 
 
 class Library(Base):
-    __tablename__ = "library"
+    __tablename__ = "game_library"
 
     id = Column(Integer, primary_key=True, index=True)
     game_id = Column(Integer, ForeignKey("games.id"), nullable=False)
