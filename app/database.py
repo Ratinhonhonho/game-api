@@ -7,6 +7,9 @@ DATABASE_URL = os.getenv(
     "mysql+pymysql://root:SUA_SENHA@localhost/game_api"
 )
 
+if DATABASE_URL.startswith("mysql://"):
+    DATABASE_URL = DATABASE_URL.replace("mysql://", "mysql+pymysql://", 1)
+
 engine = create_engine(DATABASE_URL)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
