@@ -1,7 +1,11 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, declarative_base 
+from sqlalchemy.orm import sessionmaker, declarative_base
+import os
 
-DATABASE_URL = "mysql+pymysql://root:SUA_SENHA_AQUI@localhost/game_api"
+DATABASE_URL = os.getenv(
+    "DATABASE_URL",
+    "mysql+pymysql://root:SUA_SENHA@localhost/game_api"
+)
 
 engine = create_engine(DATABASE_URL)
 
