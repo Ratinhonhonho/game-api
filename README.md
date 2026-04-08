@@ -17,12 +17,6 @@ O sistema permite cadastrar jogos, jogadores e registros da biblioteca de jogos 
 - MySQL
 - Uvicorn
 
-## Endpoints
-
-- GET /games
-- POST /games
-- GET /players
-
 ## Recursos da API
 
 A aplicação possui 3 recursos principais:
