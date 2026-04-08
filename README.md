@@ -6,7 +6,7 @@
 
 ## Descrição do projeto
 
-Esta API REST foi desenvolvida para simular uma plataforma de jogos de videogame.
+Esta API REST foi desenvolvida para o gerenciamento de catálogo de jogos, jogadores e bibliotecas digitais.
 O sistema permite cadastrar jogos, jogadores e registros da biblioteca de jogos adquiridos pelos jogadores.
 
 ## Tecnologias utilizadas
