@@ -17,6 +17,12 @@ O sistema permite cadastrar jogos, jogadores e registros da biblioteca de jogos 
 - MySQL
 - Uvicorn
 
+## Fluxo de uso
+
+1. Criar um jogador
+2. Criar um jogo
+3. Adicionar jogo à biblioteca do jogador
+
 ## Recursos da API
 
 A aplicação possui 3 recursos principais:
