@@ -1,6 +1,7 @@
 # API REST de Jogos de Videogame
 
 ## Integrantes
+
 - Renato
 - Sara
 
@@ -16,6 +17,14 @@ O sistema permite cadastrar jogos, jogadores e registros da biblioteca de jogos 
 - SQLAlchemy
 - MySQL
 - Uvicorn
+- Railway
+- GitHub
+
+## Fluxo de uso
+
+1. Criar um jogador
+2. Criar um jogo
+3. Adicionar um jogo à biblioteca do jogador
 
 ## Fluxo de uso
 
@@ -32,64 +41,67 @@ A aplicação possui 3 recursos principais:
 Responsável pelo catálogo de jogos disponíveis.
 
 Campos:
-- id
-- title
-- platform
-- genre
-- price
-- developer
-- release_date
-- rating
-- file_size_gb
-- multiplayer_support
+- `id`
+- `title`
+- `platform`
+- `genre`
+- `price`
+- `developer`
+- `release_date`
+- `rating`
+- `file_size_gb`
+- `multiplayer_support`
 
 ### 2. Players
 
 Responsável pelo cadastro dos jogadores.
 
 Campos:
-- id
-- gamertag
-- email
-- region
-- level
-- avatar_url
-- achievements_unlocked
-- online_status
-- friends_count
-- last_login
+- `id`
+- `gamertag`
+- `email`
+- `region`
+- `level`
+- `avatar_url`
+- `achievements_unlocked`
+- `online_status`
+- `friends_count`
+- `last_login`
 
 ### 3. Library
 
 Responsável pelos registros da biblioteca de jogos dos jogadores.
 
 Campos:
-- id
-- game_id
-- player_id
-- activation_key
-- purchase_date
-- playtime_hours
-- last_played
-- is_installed
-- download_progress
-- is_gift
+- `id`
+- `game_id`
+- `player_id`
+- `activation_key`
+- `purchase_date`
+- `playtime_hours`
+- `last_played`
+- `is_installed`
+- `download_progress`
+- `is_gift`
 
-## Como executar o projeto
+## Como executar o projeto localmente
 
 ### 1. Clonar o repositório
+
 ```bash
-git clone URL_DO_REPOSITORIO
-cd game_api
+git clone https://github.com/Ratinhonhonho/game-api.git
+cd game-api
 ```
 
 ### 2. Criar e ativar o ambiente virtual
+
 ```bash
 python -m venv venv
 venv\Scripts\activate
 ```
 
 ### 3. Instalar as dependências
+
 ```bash
 pip install -r requirements.txt
 ```
@@ -97,6 +109,7 @@ pip install -r requirements.txt
 ### 4. Criar o banco de dados no MySQL
 
 No MySQL Workbench, executar:
+
 ```sql
 CREATE DATABASE game_api;
 USE game_api;
@@ -104,24 +117,38 @@ USE game_api;
 
 ### 5. Criar as tabelas
 
-Após criar o banco, criar as tabelas `games`, `players` e `library` conforme a estrutura do projeto.
+Após criar o banco, criar as tabelas `games`, `players` e `game_library` conforme a estrutura do projeto.
 
 ### 6. Configurar a conexão com o banco
 
-No arquivo `app/database.py`, ajustar usuário e senha do MySQL:
+No arquivo `app/database.py`, a conexão está preparada para funcionar com variável de ambiente no deploy e com fallback local:
+
 ```python
-DATABASE_URL = "mysql+pymysql://root:SUA_SENHA@localhost/game_api"
+DATABASE_URL = os.getenv(
+    "DATABASE_URL",
+    "mysql+pymysql://root:SUA_SENHA@localhost/game_api"
+)
 ```
 
+Substitua `SUA_SENHA` pela senha do seu MySQL local, caso vá executar o projeto localmente.
+
 ### 7. Rodar a aplicação
+
 ```bash
 uvicorn app.main:app --reload
 ```
 
 ## Como acessar
 
-- API local: http://127.0.0.1:8000
-- Documentação Swagger: http://127.0.0.1:8000/docs
+### Acesso local
+
+- API local: `http://127.0.0.1:8000`
+- Documentação Swagger local: `http://127.0.0.1:8000/docs`
+
+### Acesso online (deploy)
+
+- API online: `https://game-api-production-cf0b.up.railway.app`
+- Documentação Swagger online: `https://game-api-production-cf0b.up.railway.app/docs`
 
 ## Endpoints principais
 
@@ -149,6 +176,7 @@ uvicorn app.main:app --reload
 ## Exemplos de uso
 
 ### Criar um jogo
+
 ```json
 {
   "title": "Elden Ring",
@@ -164,6 +192,7 @@ uvicorn app.main:app --reload
 ```
 
 ### Criar um jogador
+
 ```json
 {
   "gamertag": "PlayerOne_99",
@@ -179,6 +208,7 @@ uvicorn app.main:app --reload
 ```
 
 ### Criar um registro na biblioteca
+
 ```json
 {
   "game_id": 5,
@@ -198,7 +228,14 @@ uvicorn app.main:app --reload
 - O projeto utiliza MySQL como banco de dados.
 - A documentação interativa pode ser acessada pela rota `/docs`.
 - Os testes dos endpoints podem ser feitos diretamente no Swagger.
+- No deploy, a aplicação utiliza variáveis de ambiente para conexão com o banco de dados.
+- O recurso da biblioteca continua acessível pela rota `/library`, embora a tabela no banco tenha sido renomeada para `game_library` por compatibilidade no deploy.
+
+## Repositório GitHub
+
+https://github.com/Ratinhonhonho/game-api
 
 ## URL de deploy
 
-> DATABASE_URL = "mysql+pymysql://root:SUA_SENHA_AQUI@localhost/game_api"
+https://game-api-production-cf0b.up.railway.app
+
