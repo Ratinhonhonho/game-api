@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, Header
 from sqlalchemy.orm import Session
 
 from app import models, schemas
@@ -7,6 +7,13 @@ from app.database import SessionLocal, engine
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+
+API_TOKEN = "somente-permitido-matheus-linhares-123"
+
+
+def verify_api_token(x_api_token: str = Header(None)):
+    if x_api_token != API_TOKEN:
+        raise HTTPException(status_code=401, detail="Token inválido ou ausente")
 
 
 def get_db():
@@ -23,7 +30,11 @@ def home():
 
 
 @app.post("/games", response_model=schemas.GameResponse, status_code=201)
-def create_game(game: schemas.GameCreate, db: Session = Depends(get_db)):
+def create_game(
+    game: schemas.GameCreate,
+    db: Session = Depends(get_db),
+    _: None = Depends(verify_api_token)
+):
     db_game = models.Game(**game.model_dump())
     db.add(db_game)
     db.commit()
@@ -59,7 +70,11 @@ def update_game(game_id: int, game_data: schemas.GameCreate, db: Session = Depen
 
 
 @app.delete("/games/{game_id}")
-def delete_game(game_id: int, db: Session = Depends(get_db)):
+def delete_game(
+    game_id: int,
+    db: Session = Depends(get_db),
+    _: None = Depends(verify_api_token)
+):
     game = db.query(models.Game).filter(models.Game.id == game_id).first()
     if not game:
         raise HTTPException(status_code=404, detail="Jogo não encontrado")
@@ -70,7 +85,11 @@ def delete_game(game_id: int, db: Session = Depends(get_db)):
 
 
 @app.post("/players", response_model=schemas.PlayerResponse, status_code=201)
-def create_player(player: schemas.PlayerCreate, db: Session = Depends(get_db)):
+def create_player(
+    player: schemas.PlayerCreate,
+    db: Session = Depends(get_db),
+    _: None = Depends(verify_api_token)
+):
     db_player = models.Player(**player.model_dump())
     db.add(db_player)
     db.commit()
@@ -106,7 +125,11 @@ def update_player(player_id: int, player_data: schemas.PlayerCreate, db: Session
 
 
 @app.delete("/players/{player_id}")
-def delete_player(player_id: int, db: Session = Depends(get_db)):
+def delete_player(
+    player_id: int,
+    db: Session = Depends(get_db),
+    _: None = Depends(verify_api_token)
+):
     player = db.query(models.Player).filter(models.Player.id == player_id).first()
     if not player:
         raise HTTPException(status_code=404, detail="Jogador não encontrado")
@@ -117,7 +140,11 @@ def delete_player(player_id: int, db: Session = Depends(get_db)):
 
 
 @app.post("/library", response_model=schemas.LibraryResponse, status_code=201)
-def create_library_entry(entry: schemas.LibraryCreate, db: Session = Depends(get_db)):
+def create_library_entry(
+    entry: schemas.LibraryCreate,
+    db: Session = Depends(get_db),
+    _: None = Depends(verify_api_token)
+):
     db_entry = models.Library(**entry.model_dump())
     db.add(db_entry)
     db.commit()
@@ -153,7 +180,11 @@ def update_library_entry(entry_id: int, entry_data: schemas.LibraryCreate, db: S
 
 
 @app.delete("/library/{entry_id}")
-def delete_library_entry(entry_id: int, db: Session = Depends(get_db)):
+def delete_library_entry(
+    entry_id: int,
+    db: Session = Depends(get_db),
+    _: None = Depends(verify_api_token)
+):
     entry = db.query(models.Library).filter(models.Library.id == entry_id).first()
     if not entry:
         raise HTTPException(status_code=404, detail="Registro da biblioteca não encontrado")
